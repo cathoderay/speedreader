@@ -14,7 +14,7 @@ $(document).ready(function(){
 
     $("#start").click(function(){
         text = $('#text').val();
-        tokens = text.split(' ');
+        tokens = text.split(/ |\n/);
         id = setInterval(update, $("#timer").val());
     });
 
