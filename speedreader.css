@@ -1,0 +1,8 @@
+body {
+    text-align: center;
+}
+
+#current-word {
+    font-size: 50;
+    font-family: arial;
+}
