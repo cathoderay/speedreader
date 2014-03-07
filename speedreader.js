@@ -1,24 +1,48 @@
-id = undefined;
-pos = 0;
-text = undefined;
-tokens = undefined; 
+var intervalId = null;
+var pos = 0;
+var tokens = [];
 
 function update() {
     if (pos >= tokens.length) {
         pos = 0;
+        $("#current-word").text('\u00a0');  // \u00a0 == &nbsp;
+    } else {
+        $("#current-word").text(tokens[pos++]);
     }
-    $("#current-word").text(tokens[pos++]);
+}
+
+// Starts or restarts the interval.
+function startInterval() {
+    stopInterval();
+    var milliseconds = $("#timer").val()
+    intervalId = setInterval(update, milliseconds);
+}
+
+function stopInterval() {
+    if (intervalId) {
+        clearInterval(intervalId);
+        intervalId = null;
+    }
+}
+
+function updateTokens() {
+    var text = $('#text').val().trim();
+    tokens = text.split(/\s+/);
 }
 
 $(document).ready(function(){
-
-    $("#start").click(function(){
-        text = $('#text').val();
-        tokens = text.split(/ |\n/);
-        id = setInterval(update, $("#timer").val());
+    $("#start").click(function() {
+        updateTokens();
+        startInterval();
     });
 
-    $("#stop").click(function(){
-        clearInterval(id);
+    $("#timer").on('input', function() {
+        if (intervalId) {
+            startInterval();
+        }
+    });
+
+    $("#stop").click(function() {
+        stopInterval();
     });
 });
